@@ -76,7 +76,15 @@ class FlutterBluetoothPlugin : FlutterPlugin, MethodCallHandler, EventChannel.St
       IS_ENABLED -> result.success(BluetoothActivity.isEnabled)
       CLOSE_SOCKET -> when {
           android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O -> {
-            deviceActivity.getSocket(UUID.fromString(call.argument(SOCKET_UUID))).close()
+            val closed = deviceActivity.getSocket(UUID.fromString(call.argument(SOCKET_UUID))).close()
+            when {
+                closed -> {
+                  result.success(true)
+                }
+                else -> {
+                  result.error("CLOSE_FAILED", null, null)
+                }
+            }
           }
         else -> TODO("ADD Android support pre O")
       }
@@ -92,7 +100,16 @@ class FlutterBluetoothPlugin : FlutterPlugin, MethodCallHandler, EventChannel.St
         null)
       WRITE_BT -> when {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O -> {
-          deviceActivity.getSocket(UUID.fromString(call.argument(SOCKET_UUID))).write(call.argument(WRITE_DATA)!!)
+          val wrote = deviceActivity.getSocket(UUID.fromString(call.argument(SOCKET_UUID)))
+                  .write(call.argument(WRITE_DATA)!!)
+          when {
+              wrote -> {
+                result.success(true)
+              }
+              else -> {
+                result.error("WRITE_FAILED", null, null)
+              }
+          }
         }
         else -> {
           TODO("Add Android support pre O")
@@ -105,6 +122,7 @@ class FlutterBluetoothPlugin : FlutterPlugin, MethodCallHandler, EventChannel.St
                   call.argument(NAME_PATTERN),
                   call.argument(UUID_STRING)
           )
+          result.success(true)
         }
         else -> {
           result.notImplemented()
@@ -126,7 +144,8 @@ class FlutterBluetoothPlugin : FlutterPlugin, MethodCallHandler, EventChannel.St
       val uuidInt = arguments.split('|')
       when {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O -> {
-          deviceActivity.getSocket(UUID.fromString(uuidInt.first())).addReadEmitter(uuidInt.last(), emitter!!)
+          deviceActivity.getSocket(UUID.fromString(uuidInt.first()))
+                  .addReadEmitter(uuidInt.last(), emitter!!)
         }
         else -> {
           TODO("Add Android support pre O")
@@ -140,7 +159,8 @@ class FlutterBluetoothPlugin : FlutterPlugin, MethodCallHandler, EventChannel.St
       val uuidInt = arguments.split('|')
       when {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O -> {
-          deviceActivity.getSocket(UUID.fromString(uuidInt.first())).removeReadEmitter(uuidInt.last())
+          deviceActivity.getSocket(UUID.fromString(uuidInt.first()))
+                  .removeReadEmitter(uuidInt.last())
         }
         else -> {
           TODO("Add Android support pre O")

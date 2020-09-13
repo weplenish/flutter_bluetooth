@@ -1,17 +1,18 @@
 class DeviceAttributes {
   final bool singleDevice;
   final String nameRegex;
-  final String deviceUUID;
+  final String serviceUUID;
 
-  DeviceAttributes({this.nameRegex, this.deviceUUID, this.singleDevice = true});
+  DeviceAttributes(
+      {this.nameRegex, this.serviceUUID, this.singleDevice = true});
 
   Map<String, dynamic> toMap() {
     var result = <String, dynamic>{"singleDevice": singleDevice};
     if (nameRegex != null) {
       result.putIfAbsent("namePattern", () => nameRegex);
     }
-    if (deviceUUID != null) {
-      result.putIfAbsent("uuidString", () => deviceUUID);
+    if (serviceUUID != null) {
+      result.putIfAbsent("uuidString", () => serviceUUID);
     }
     return result;
   }

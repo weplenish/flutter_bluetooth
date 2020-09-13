@@ -168,26 +168,30 @@ class DeviceActivity(private val channel: MethodChannel) : Activity() {
             emitters.minus(id)
         }
 
-        fun write(bytes: ByteArray) {
+        fun write(bytes: ByteArray): Boolean {
             try {
                 mmSocket?.use{
                     it.outputStream.write(bytes)
+                    return true
                 }
             } catch (e: Throwable) {
                 TODO("Throw an error here")
             }
+            return false
         }
 
-        fun close(){
+        fun close(): Boolean{
             try {
                 mmSocket?.close()
             } catch (e: Throwable) {
+                return false
                 TODO("Maybe throw an error here")
             }
 
             if(openSockets.containsKey(uuid)) {
                 openSockets.remove(uuid)
             }
+            return true
         }
     }
 }

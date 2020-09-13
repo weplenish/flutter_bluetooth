@@ -1,6 +1,6 @@
 import 'package:flutter_bluetooth/bluetooth_class.dart';
 
-class PairedDeviceAttributes {
+class PairedDevice {
   final String address;
   final String name;
   final List<String> uuids;
@@ -8,7 +8,7 @@ class PairedDeviceAttributes {
   final int type;
   final BluetoothClass bluetoothClass;
 
-  PairedDeviceAttributes(
+  PairedDevice(
       {this.address,
       this.name,
       this.uuids,
@@ -16,8 +16,8 @@ class PairedDeviceAttributes {
       this.type,
       this.bluetoothClass});
 
-  factory PairedDeviceAttributes.fromMap(Map<String, dynamic> map) {
-    return PairedDeviceAttributes(
+  factory PairedDevice.fromMap(Map<String, dynamic> map) {
+    return PairedDevice(
         address: map['address'],
         name: map['name'],
         uuids: map['uuids'],

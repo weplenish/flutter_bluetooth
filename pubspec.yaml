@@ -1,6 +1,6 @@
 name: flutter_bluetooth
-description: Low dependency bluetooth plugin written in swift and kotlin.
-version: 0.0.1
+description: Low dependency modern bluetooth plugin written in swift and kotlin.
+version: 0.0.2
 author: Eitan Stadtlander-Miller
 homepage: https://www.weplenish.com
 
